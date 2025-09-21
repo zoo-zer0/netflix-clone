@@ -4,8 +4,8 @@ document.querySelectorAll('.carousel').forEach(carousel => {
     const nextBtn = carousel.querySelector('.next');
     const prevBtn = carousel.querySelector('.prev');
     let i = 1;
-
-    let imageWidth = images[0].offsetWidth + 10;
+    let rowWidth = carousel.offsetWidth;
+    let imageWidth = images[0].offsetWidth;
     //infinite carousel feature
     //document selector all treats html element like an array(?)
     const firstClone = images[0].cloneNode(true);
