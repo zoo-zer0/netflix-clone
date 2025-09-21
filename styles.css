@@ -162,20 +162,23 @@ ul.primary-navigation{
      position: relative;
      z-index: 5;
 } 
+.carousel {
+    position: relative;
+    overflow:hidden;
+    width: 100%;
+}
 .row-container{ 
     z-index: auto;
     position: static;
     display: flex; 
-    gap: 0.5rem; 
-    overflow-x: auto; 
-    overflow-y: visible; 
-    scroll-behavior: smooth; 
+    overflow-x: auto;
+    scroll-behavior: smooth;
 } 
 .row-container::-webkit-scrollbar{
     display:none;
 }
 .row-container img{ 
-    
+    margin-right: 10px;
     width: 200px; 
     border-radius: 4px; 
     transition: transform 0.3s ease; 
