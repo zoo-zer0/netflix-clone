@@ -63,6 +63,38 @@ ul.primary-navigation{
 .secondary-navigation a{
     color:#ffffff;
 }
+.nav-element{
+    position: relative;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+}
+.nav-element .dropdown{
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background:#000000ca;
+    z-index: 10;
+    min-width: 250px;
+    min-height: 50px;
+}
+.nav-element .dropdown p{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.nav-element .dropdown.active{
+    display: block;
+}
+.other-profile{
+    display: flex;
+    align-items: center;
+    width: 250px;
+    height: 50px;
+    padding-left: 20px;
+}
+
 
 .hero {
     position: relative;
@@ -166,6 +198,9 @@ ul.primary-navigation{
     position: relative;
     overflow:hidden;
     width: 100%;
+}
+.outer-carousel {
+    display: flex;
 }
 .row-container{ 
     z-index: auto;

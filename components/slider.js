@@ -1,8 +1,8 @@
 document.querySelectorAll('.carousel').forEach(carousel => {
     const container = carousel.querySelector('.row-container');
     const images = carousel.querySelectorAll('.row-container a');
-    const nextBtn = carousel.querySelector('.next');
-    const prevBtn = carousel.querySelector('.prev');
+    const nextBtn = carousel.parentElement.querySelector('.next');
+    const prevBtn = carousel.parentElement.querySelector('.prev');
     let i = 1;
     let rowWidth = carousel.offsetWidth;
     let imageWidth = images[0].offsetWidth;
