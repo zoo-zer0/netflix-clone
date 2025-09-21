@@ -169,10 +169,8 @@ ul.primary-navigation{
 }
 .row-container{ 
     z-index: auto;
-    position: static;
+    position: relative;
     display: flex; 
-    overflow-x: auto;
-    scroll-behavior: smooth;
 } 
 .row-container::-webkit-scrollbar{
     display:none;
