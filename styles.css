@@ -212,7 +212,7 @@ ul.primary-navigation{
 }
 .row-container img{ 
     margin-right: 10px;
-    width: 200px; 
+    width: 400px; 
     border-radius: 4px; 
     transition: transform 0.3s ease; 
     transform-origin: center bottom;
