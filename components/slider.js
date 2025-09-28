@@ -1,43 +1,43 @@
 
 const newOnNetflix = [
-    {title: "Breaking Bad", img:"./img/breaking-bad.webp"},
-    {title: "Cat", img:"./img/cat.jpg"},
-    {title: "Inside Job", img:"./img/inside-job.jpg"},
-    {title: "Rick and Morty", img: "./img/rick-and-morty.webp"},
-    {title: "Dexter", img: "./img/dexter.webp"},
-    {title: "Gossip Girl", img: "./img/gossip-girl.webp"},
-    {title: "Knives Out", img: "./img/knives-out.webp"}
+    {title: "Breaking Bad", img:"./src/img/breaking-bad.webp"},
+    {title: "Cat", img:"./src/img/cat.jpg"},
+    {title: "Inside Job", img:"./src/img/inside-job.jpg"},
+    {title: "Rick and Morty", img: "./src/img/rick-and-morty.webp"},
+    {title: "Dexter", img: "./src/img/dexter.webp"},
+    {title: "Gossip Girl", img: "./src/img/gossip-girl.webp"},
+    {title: "Knives Out", img: "./src/img/knives-out.webp"}
 ];
 const test = [
-    {img:"./img/numbers/00.png"},
-    {img: "./img/numbers/01.png"},
-    {img: "./img/numbers/02.png"},
-    {img: "./img/numbers/03.png"},
-    {img: "./img/numbers/04.png"},
-    {img: "./img/numbers/05.png"},
-    {img: "./img/numbers/06.png"},
-    {img: "./img/numbers/07.png"},
-    {img: "./img/numbers/08.png"},
-    {img: "./img/numbers/09.png"},
-    {img: "./img/numbers/10.png"},
-    {img: "./img/numbers/11.png"},
-    {img: "./img/numbers/12.png"}
+    {img:"./src/img/numbers/00.png"},
+    {img: "./src/img/numbers/01.png"},
+    {img: "./src/img/numbers/02.png"},
+    {img: "./src/img/numbers/03.png"},
+    {img: "./src/img/numbers/04.png"},
+    {img: "./src/img/numbers/05.png"},
+    {img: "./src/img/numbers/06.png"},
+    {img: "./src/img/numbers/07.png"},
+    {img: "./src/img/numbers/08.png"},
+    {img: "./src/img/numbers/09.png"},
+    {img: "./src/img/numbers/10.png"},
+    {img: "./src/img/numbers/11.png"},
+    {img: "./src/img/numbers/12.png"}
 ]
 const test2 = [
-    {img:"./img/numbers/00.png"},
-    {img: "./img/numbers/01.png"},
-    {img: "./img/numbers/02.png"},
-    {img: "./img/numbers/03.png"},
-    {img: "./img/numbers/04.png"},
-    {img: "./img/numbers/05.png"},
-    {img: "./img/numbers/06.png"},
-    {img: "./img/numbers/07.png"},
-    {img: "./img/numbers/08.png"},
-    {img: "./img/numbers/09.png"},
-    {img: "./img/numbers/10.png"},
-    {img: "./img/numbers/11.png"},
-    {img: "./img/numbers/12.png"},
-    {img: "./img/numbers/13.png"}
+    {img:"./src/img/numbers/00.png"},
+    {img: "./src/img/numbers/01.png"},
+    {img: "./src/img/numbers/02.png"},
+    {img: "./src/img/numbers/03.png"},
+    {img: "./src/img/numbers/04.png"},
+    {img: "./src/img/numbers/05.png"},
+    {img: "./src/img/numbers/06.png"},
+    {img: "./src/img/numbers/07.png"},
+    {img: "./src/img/numbers/08.png"},
+    {img: "./src/img/numbers/09.png"},
+    {img: "./src/img/numbers/10.png"},
+    {img: "./src/img/numbers/11.png"},
+    {img: "./src/img/numbers/12.png"},
+    {img: "./src/img/numbers/13.png"}
 ]
 function generateCarousel(title, items){
     const main = document.querySelector("main");
@@ -88,31 +88,44 @@ document.querySelectorAll('.carousel').forEach(carousel => {
     const images = carousel.querySelectorAll('.row-container a');
     const nextBtn = carousel.parentElement.querySelector('.next');
     const prevBtn = carousel.parentElement.querySelector('.prev');
-    let i = 0;
     let rowWidth = carousel.offsetWidth;
     let imageWidth = images[0].offsetWidth;
     let imagePerRow = Math.floor(rowWidth/imageWidth);
     
     //infinite carousel feature
-    //document selector all treats html element like an array(?)
-    const firstClone = images[0].cloneNode(true);
-    const lastClone = images[images.length -1].cloneNode(true);
-    firstClone.id = 'first-clone';
-    lastClone.id = 'last-clone';   
-    //initial position
+    const firstClones = [];
+    const lastClones = [];
+    for (let j = 0; j < imagePerRow; j++) {
+        const first = images[j].cloneNode(true);
+        const last = images[images.length - imagePerRow + j].cloneNode(true);
+        
+        first.id = `first-clone-${j}`;
+        last.id = `last-clone-${j}`;
+        
+        firstClones.push(first);
+        lastClones.push(last);
+    }
+    lastClones.forEach(clone => container.insertBefore(clone, container.firstChild));
+    firstClones.forEach(clone => container.appendChild(clone));
+    let i = imagePerRow;
+    
     container.style.transform = `translateX(${-imageWidth * i}px)`;
-
     nextBtn.addEventListener("click", ()=>{
         console.log(i);
         console.log(imagePerRow);
-        if(i>=images.length-imagePerRow){
-            i=0;
+        if(i-imagePerRow>=images.length-imagePerRow){
+            i=imagePerRow;
             container.style.transition = 'transform 0.4s ease-in-out';
-            container.style.transform = 'translateX(0px)';
+            container.style.transform = `translateX(${-imageWidth*(images.length + imagePerRow)}px)`;
+            setTimeout(()=>{
+                container.style.transition = 'none';
+                container.style.transform=`translateX(${-imageWidth * i}px)`;
+            }, 300);
         }
         else{
-            if(i+imagePerRow>=images.length-imagePerRow) 
-                {i =  images.length-imagePerRow;
+            if(i>=images.length-imagePerRow) 
+                {i =  images.length;
+                    console.log("detected");
                     console.log(images.length);
                 }
             else{i=i+imagePerRow;}
@@ -122,13 +135,22 @@ document.querySelectorAll('.carousel').forEach(carousel => {
         console.log(i);
     });
     prevBtn.addEventListener("click",()=>{
-        if(i==0){
-            i=images.length-imagePerRow;
+        if(i==imagePerRow){
+            i=imagePerRow+images.length-imagePerRow;
+            container.style.transition = 'transform 0.4s ease-in-out';
+            container.style.transform = `translateX(${imageWidth*(images.length-imagePerRow)}px)`;
+            setTimeout(()=>{
+                container.style.transition='none';
+                container.style.transform = `translateX(${-imageWidth*i}px)`;
+            },300);
+        }
+        else if(i<imagePerRow+imagePerRow){
+            i=imagePerRow;
             container.style.transition = 'transform 0.4s ease-in-out';
             container.style.transform = `translateX(${-imageWidth*i}px)`;
         }
         else{
-            if(i==images.length-imagePerRow){
+            if(i-imagePerRow==images.length-imagePerRow){
                 i = i-images.length%imagePerRow;
                 console.log("detected");
                 
@@ -139,7 +161,4 @@ document.querySelectorAll('.carousel').forEach(carousel => {
         }
         console.log(i);
     });
-
-    //loop reset
-    
 })
