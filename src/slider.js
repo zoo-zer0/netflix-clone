@@ -1,44 +1,3 @@
-
-const newOnNetflix = [
-    {title: "Breaking Bad", img:"./src/img/breaking-bad.webp"},
-    {title: "Cat", img:"./src/img/cat.jpg"},
-    {title: "Inside Job", img:"./src/img/inside-job.jpg"},
-    {title: "Rick and Morty", img: "./src/img/rick-and-morty.webp"},
-    {title: "Dexter", img: "./src/img/dexter.webp"},
-    {title: "Gossip Girl", img: "./src/img/gossip-girl.webp"},
-    {title: "Knives Out", img: "./src/img/knives-out.webp"}
-];
-const test = [
-    {img:"./src/img/numbers/00.png"},
-    {img: "./src/img/numbers/01.png"},
-    {img: "./src/img/numbers/02.png"},
-    {img: "./src/img/numbers/03.png"},
-    {img: "./src/img/numbers/04.png"},
-    {img: "./src/img/numbers/05.png"},
-    {img: "./src/img/numbers/06.png"},
-    {img: "./src/img/numbers/07.png"},
-    {img: "./src/img/numbers/08.png"},
-    {img: "./src/img/numbers/09.png"},
-    {img: "./src/img/numbers/10.png"},
-    {img: "./src/img/numbers/11.png"},
-    {img: "./src/img/numbers/12.png"}
-]
-const test2 = [
-    {img:"./src/img/numbers/00.png"},
-    {img: "./src/img/numbers/01.png"},
-    {img: "./src/img/numbers/02.png"},
-    {img: "./src/img/numbers/03.png"},
-    {img: "./src/img/numbers/04.png"},
-    {img: "./src/img/numbers/05.png"},
-    {img: "./src/img/numbers/06.png"},
-    {img: "./src/img/numbers/07.png"},
-    {img: "./src/img/numbers/08.png"},
-    {img: "./src/img/numbers/09.png"},
-    {img: "./src/img/numbers/10.png"},
-    {img: "./src/img/numbers/11.png"},
-    {img: "./src/img/numbers/12.png"},
-    {img: "./src/img/numbers/13.png"}
-]
 function generateCarousel(title, items){
     const main = document.querySelector("main");
     const contentRow = document.createElement("section");
@@ -70,22 +29,71 @@ function generateCarousel(title, items){
     outerCarousel.appendChild(nextButton);
 
     items.forEach(item=>{
+        const cardWrapper = document.createElement("div");
+        cardWrapper.classList.add("content-card-wrapper");
         const link = document.createElement("a");
         link.href = '#';
+
         const img = document.createElement("img");
         img.classList.add("content-card");
         img.src = item.img;
         img.alt = item.title;
+        //add like hover
+        const hover = document.createElement("div");
+        hover.classList.add("hover-overlay");
+        const thumbnail = document.createElement("img");
+        const title = document.createElement("h2");
+        title.textContent = item.title;
+        const buttons = document.createElement("div");
+        buttons.classList.add("hover-buttons");
+
+        //count data
+         const playCount = parseInt(localStorage.getItem(item.title + "-play")) || 0;
+         const likes = parseInt(localStorage.getItem(item.title + "-likes")) || 0;
+         const dislikes = parseInt(localStorage.getItem(item.title + "-dislikes")) || 0;
+
+
+        const playBtn = document.createElement("button");
+        playBtn.textContent = `▶ ${playCount}`;
+        const dislikeBtn = document.createElement("b");
+        dislikeBtn.textContent = `👎${dislikes}`;
+        const likeBtn = document.createElement("b");
+        likeBtn.textContent = `👍${likes}`;
+        playBtn.addEventListener("click", (e) => {
+            e.preventDefault(); // prevent the link from navigating
+            e.stopPropagation();
+            const newCount = (parseInt(localStorage.getItem(item.title + "-play")) || 0) + 1;
+            localStorage.setItem(item.title + "-play", newCount);
+            playBtn.textContent = `▶ ${newCount}`;
+        });
+
+        likeBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const newCount = (parseInt(localStorage.getItem(item.title + "-likes")) || 0) + 1;
+            localStorage.setItem(item.title + "-likes", newCount);
+            likeBtn.textContent = `👍 ${newCount}`;
+        });
+
+        dislikeBtn.addEventListener("click", e => {
+            e.preventDefault();
+            e.stopPropagation();
+            const newCount = (parseInt(localStorage.getItem(item.title + "-dislikes")) || 0) + 1;
+            localStorage.setItem(item.title + "-dislikes", newCount);
+            dislikeBtn.textContent = `👎 ${newCount}`;
+        });
+        buttons.append(playBtn, likeBtn, dislikeBtn);
+        hover.append(title, buttons);
+        
+        link.appendChild(hover);
         link.appendChild(img);
-        rowContainer.appendChild(link);
+        cardWrapper.appendChild(link);
+        rowContainer.appendChild(cardWrapper);
     })
 }
-generateCarousel("New on Netflix", newOnNetflix);
-generateCarousel("test", test);
-generateCarousel("test 2", test2);
-document.querySelectorAll('.carousel').forEach(carousel => {
+function initCarousel(carousel){
     const container = carousel.querySelector('.row-container');
-    const images = carousel.querySelectorAll('.row-container a');
+    const images = carousel.querySelectorAll('.row-container .content-card-wrapper');
     const nextBtn = carousel.parentElement.querySelector('.next');
     const prevBtn = carousel.parentElement.querySelector('.prev');
 //    let i = 1;
@@ -110,14 +118,7 @@ document.querySelectorAll('.carousel').forEach(carousel => {
     lastClones.forEach(clone => container.insertBefore(clone, container.firstChild));
     firstClones.forEach(clone => container.appendChild(clone));
     let i = imagePerRow;
-    /*const firstClone = images[0].cloneNode(true);
-    const lastClone = images[images.length -1].cloneNode(true);
-    firstClone.id = 'first-clone';
-    lastClone.id = 'last-clone';
-    container.appendChild(firstClone);
-    container.insertBefore(lastClone, images[0]);
-    */
-    //initial position
+
     container.style.transform = `translateX(${-imageWidth * i}px)`;
     nextBtn.addEventListener("click", ()=>{
         console.log(i);
@@ -170,60 +171,19 @@ document.querySelectorAll('.carousel').forEach(carousel => {
         }
         console.log(i);
     });
-/*
-    nextBtn.addEventListener("click", ()=>{
-        console.log(i);
-        console.log(imagePerRow);
-        if(i-1>=images.length-imagePerRow){
-            i=1;
-            container.style.transition = 'transform 0.4s ease-in-out';
-            container.style.transform = `translateX(${-imageWidth*(images.length)}px)`;
-            setTimeout(()=>{
-                container.style.transition = 'none';
-                container.style.transform=`translateX(${-imageWidth * i}px)`;
-            }, 100);
-        }
-        else{
-            if(i+imagePerRow-1>=images.length-imagePerRow) 
-                {i =  images.length-imagePerRow+1;
-                    console.log("detected");
-                    console.log(images.length);
-                }
-            else{i=i+imagePerRow;}
-            container.style.transition = 'transform 0.4s ease-in-out';
-            container.style.transform = `translateX(${-imageWidth*i}px)`;
-        }
-        console.log(i);
-    });
-    prevBtn.addEventListener("click",()=>{
-        if(i==1){
-            i=1+images.length-imagePerRow;
-            container.style.transition = 'transform 0.4s ease-in-out';
-            container.style.transform = `translateX(${imageWidth*images.length}px)`;
-            setTimeout(()=>{
-                container.style.transition='none';
-                container.style.transform = `translateX(${-imageWidth*i}px)`;
-            },200);
-        }
-        else if(i<1+imagePerRow){
-            i=1;
-            container.style.transition = 'transform 0.4s ease-in-out';
-            container.style.transform = `translateX(${-imageWidth*i}px)`;
-        }
-        else{
-            if(i-1==images.length-imagePerRow){
-                i = i-images.length%imagePerRow;
-                console.log("detected");
-                
-            }
-            else{i=i-imagePerRow;}
-            container.style.transition = 'transform 0.4s ease-in-out';
-            container.style.transform = `translateX(${-imageWidth*i}px)`;
-        }
-        console.log(i);
-    });
-
-*/
-    //loop reset
+}
+const carousels = [
+    { title: "New on Netflix", url: "./src/data/newOnNetflix.json" },
+    { title: "Trending Now", url: "./src/data/numbers.json" },
+];
+carousels.forEach(carouselInfo=>{
+    fetch(carouselInfo.url)
+    .then(response=>response.json())
+    .then(data=>{
+        generateCarousel(carouselInfo.title, data);
+        const carouselEl = document.querySelectorAll('.carousel');
+        const latestCarousel = carouselEl[carouselEl.length - 1];
+        initCarousel(latestCarousel);
+    }).catch(err => console.error(err));
+});
     
-})
