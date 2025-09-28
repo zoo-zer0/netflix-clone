@@ -88,11 +88,13 @@ document.querySelectorAll('.carousel').forEach(carousel => {
     const images = carousel.querySelectorAll('.row-container a');
     const nextBtn = carousel.parentElement.querySelector('.next');
     const prevBtn = carousel.parentElement.querySelector('.prev');
+//    let i = 1;
     let rowWidth = carousel.offsetWidth;
     let imageWidth = images[0].offsetWidth;
     let imagePerRow = Math.floor(rowWidth/imageWidth);
     
     //infinite carousel feature
+    //document selector all treats html element like an array(?)
     const firstClones = [];
     const lastClones = [];
     for (let j = 0; j < imagePerRow; j++) {
@@ -108,7 +110,14 @@ document.querySelectorAll('.carousel').forEach(carousel => {
     lastClones.forEach(clone => container.insertBefore(clone, container.firstChild));
     firstClones.forEach(clone => container.appendChild(clone));
     let i = imagePerRow;
-    
+    /*const firstClone = images[0].cloneNode(true);
+    const lastClone = images[images.length -1].cloneNode(true);
+    firstClone.id = 'first-clone';
+    lastClone.id = 'last-clone';
+    container.appendChild(firstClone);
+    container.insertBefore(lastClone, images[0]);
+    */
+    //initial position
     container.style.transform = `translateX(${-imageWidth * i}px)`;
     nextBtn.addEventListener("click", ()=>{
         console.log(i);
@@ -161,4 +170,60 @@ document.querySelectorAll('.carousel').forEach(carousel => {
         }
         console.log(i);
     });
+/*
+    nextBtn.addEventListener("click", ()=>{
+        console.log(i);
+        console.log(imagePerRow);
+        if(i-1>=images.length-imagePerRow){
+            i=1;
+            container.style.transition = 'transform 0.4s ease-in-out';
+            container.style.transform = `translateX(${-imageWidth*(images.length)}px)`;
+            setTimeout(()=>{
+                container.style.transition = 'none';
+                container.style.transform=`translateX(${-imageWidth * i}px)`;
+            }, 100);
+        }
+        else{
+            if(i+imagePerRow-1>=images.length-imagePerRow) 
+                {i =  images.length-imagePerRow+1;
+                    console.log("detected");
+                    console.log(images.length);
+                }
+            else{i=i+imagePerRow;}
+            container.style.transition = 'transform 0.4s ease-in-out';
+            container.style.transform = `translateX(${-imageWidth*i}px)`;
+        }
+        console.log(i);
+    });
+    prevBtn.addEventListener("click",()=>{
+        if(i==1){
+            i=1+images.length-imagePerRow;
+            container.style.transition = 'transform 0.4s ease-in-out';
+            container.style.transform = `translateX(${imageWidth*images.length}px)`;
+            setTimeout(()=>{
+                container.style.transition='none';
+                container.style.transform = `translateX(${-imageWidth*i}px)`;
+            },200);
+        }
+        else if(i<1+imagePerRow){
+            i=1;
+            container.style.transition = 'transform 0.4s ease-in-out';
+            container.style.transform = `translateX(${-imageWidth*i}px)`;
+        }
+        else{
+            if(i-1==images.length-imagePerRow){
+                i = i-images.length%imagePerRow;
+                console.log("detected");
+                
+            }
+            else{i=i-imagePerRow;}
+            container.style.transition = 'transform 0.4s ease-in-out';
+            container.style.transform = `translateX(${-imageWidth*i}px)`;
+        }
+        console.log(i);
+    });
+
+*/
+    //loop reset
+    
 })
