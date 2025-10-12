@@ -322,3 +322,23 @@ footer a:hover{
     color: white;
     font-size: 16px;
 }
+
+.content-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 5 per row */
+  gap: 16px; /* space between cards */
+  margin-top: 20px;
+}
+
+.content-card-wrapper img {
+  width: 100%;
+  display: block;
+  border-radius: 6px;
+}
+
+.content-card-wrapper p {
+  text-align: center;
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: #fff;
+}
