@@ -268,7 +268,6 @@ footer a:hover{
 .content-card-wrapper {
     position: relative; /* needed for absolute overlay */
     display: inline-block;
-    margin-right: 10px; /* match row-container spacing */
 }
 
 .content-card-wrapper img.content-card {
