@@ -57,16 +57,23 @@ function debounce(fn, delay=300){
 function renderResults(items){
     const main = document.querySelector("main");
     main.innerHTML = ""; //clear hero and slider
+    main.style.paddingTop = '80px';
 
-    //just show list of titles for now to check. 
-    //  change to image later
-    const ul = document.createElement("ul");
+    const searchGrid = document.createElement("div");
+    searchGrid.className = "search-grid";
     items.forEach(item=>{
-        const li = document.createElement("li");
-        li.textContent = item.name;
-        ul.appendChild(li);
+        const card = document.createElement("div");
+        card.className = 'content-card-wrapper';
+        const img = document.createElement('img');
+        img.src = item.image;
+        img.alt = item.name;
+        const title = document.createElement('p');
+        title.textContent = item.name;
+        card.appendChild(img);
+        card.appendChild(title);
+        searchGrid.appendChild(card);
     });
-    main.appendChild(ul);
+    main.appendChild(searchGrid);
 }
 
 //receive query from form
