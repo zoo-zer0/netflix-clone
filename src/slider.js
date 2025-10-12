@@ -115,7 +115,7 @@ function initCarousel(carousel){
         firstClones.push(first);
         lastClones.push(last);
     }
-    lastClones.forEach(clone => container.insertBefore(clone, container.firstChild));
+    lastClones.slice().reverse().forEach(clone => container.insertBefore(clone, container.firstChild));
     firstClones.forEach(clone => container.appendChild(clone));
     let i = imagePerRow;
 
@@ -148,7 +148,7 @@ function initCarousel(carousel){
         if(i==imagePerRow){
             i=imagePerRow+images.length-imagePerRow;
             container.style.transition = 'transform 0.4s ease-in-out';
-            container.style.transform = `translateX(${imageWidth*(images.length-imagePerRow)}px)`;
+            container.style.transform = `translateX(0px)`;
             setTimeout(()=>{
                 container.style.transition='none';
                 container.style.transform = `translateX(${-imageWidth*i}px)`;
