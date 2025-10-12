@@ -1,22 +1,33 @@
-const handleSearch = async (query) => {
-    const res = await fetch(`http://localhost:3001/api/search?q=${query}`);
-    const data = await res.json();
-    console.log(data.items);
-}
+
 //eventListener click search button
 //generate search box with new search button
 //function generateSearchBox
+function generateSearchBox(){
+    const secondaryNav = document.querySelector('.secondary-navigation');
+    const searchIcon = document.querySelector('a.search-element');
+    
+    const searchBox = document.createElement('div');
+    searchBox.className = 'search-box';
 
-//receive query from form
-//eventListener click search button or hit ENTER
-//function handleSearch (uses searchTitles, debounce, and renderResults)
-//add event Listener for click and enter that triggers handleSearch
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.placeholder='search titles...';
+    input.id = "searchInput";
 
-//call backend for data
-//function searchTitles
-//function debounce
+    const button = document.createElement('button');
+    button.id = 'searchBtn';
+    button.textContent = '🔍';
 
-//clear previous html <main> (hero, slider)
-//add forEach item from backend data
-//function renderResults
+    searchBox.appendChild(input);
+    searchBox.appendChild(button);
+
+    searchIcon.addEventListener('click', (e)=>{
+        console.log("clicked");
+        e.preventDefault();
+        searchIcon.innerHTML='';
+        secondaryNav.insertBefore(searchBox, searchIcon);
+        input.focus();
+    });
+}
+generateSearchBox();
 
